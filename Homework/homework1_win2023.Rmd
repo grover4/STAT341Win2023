@@ -1,0 +1,106 @@
+---
+title: "Homework 1"
+author: "Your Name Here"
+subtitle: "Winter 2023"
+header-includes:
+    - \usepackage{amsmath}
+    - \usepackage{amsthm}
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+#Use this code chunk to include libraries, and set global options.
+
+knitr::opts_chunk$set(echo = TRUE)
+library(fastR2)
+library(tidyverse)
+
+```
+
+### Instructions
+
+- This homework is due in Gradescope on Wednesday Jan 11 by midnight PST.
+
+- Please answer the following questions in the order in which they are posed. 
+
+- Don't forget to knit the document frequently to make sure there are no compilation errors. 
+
+- When you are done, download the PDF file as instructed in section and submit it in Gradescope. 
+
+* * *
+
+### Exercises
+
+1. (Gizmo) The internal temperature in a gizmo (device) is a random variable X with PDF (in appropriate
+units)
+$$f(x) = 11 \cdot(1-x)^{10},\ \ \ 0 < x < 1$$
+
+a. The gizmo has a cutoff feature, so that whenever the temperature exceeds the cutoff - call it $k$ - it
+turns off. It is observed that the gizmo shuts off with probability $10^{-22}$. What is k?
+
+b. Fill in the blank: the number $k$ is the ________ 
+quantile of the distribution of $X$.
+
+
+2. Pruim problem 3.46 on page 221   (Please review section 13.2 from notes for how to make QQplots. You can use `group = sex` in the mapping in order to create the conditional plots for part b.)
+
+
+3. (CDF method) Suppose $X$ is a gamma random variable with shape parameter $k \: (>0)$ and rate parameter $\lambda\: (>0)$. In other words, the PDF of $X$ is given by:
+$$f(x) = \frac{\lambda^{k}}{\Gamma(k)} \: x^{k-1}\:e^{-\lambda\:x}, \ \ \ \  x > 0,$$
+where $\Gamma(k)$ is the gamma function. Review 13.3 from the notes if you need a reminder. 
+
+   Define $$Y = \frac{1}{X}.$$ 
+Show, using the CDF method, that $Y$ has PDF
+$$f(y) = \frac{\lambda^{k}}{\Gamma(k)} \: \frac{1}{y^{k+1}} e^{-\frac{\lambda}{y} } \ \ \ \ \ \ y > 0$$
+
+4. (Beta dist)  The beta distribution is a probability distribution that is often used in applications where the random variable is a proportion. The beta PDF  depends on two *shape* parameters - call them $\alpha \: (> 0)$ and $\beta \: (> 0)$ - and is given by:
+$$f(x) = \frac{ \Gamma(\alpha + \beta)}{\Gamma(\alpha) \: \Gamma(\beta)} \: x^{\alpha - 1} \: (1 - x )^{\beta - 1} \ \ \ 0 < x < 1.$$
+
+a. Show that the uniform distribution on (0,1) is a special case of the beta when $\alpha = \beta = 1$.
+
+b. The beta distribution offers a very flexible array of shapes for modeling data. Run the following code interactively from your Console to see how it changes with different parameter values. Feel free to try other values for $\alpha$ and $\beta$. Then describe the impact of the parameters $\alpha$ and $\beta$ on the shape. Specifically when is it symmetric? When is it skewed to the right? Skewed to the left? Bowl shaped?  (Don't just state the $\alpha,\beta$ values, but rather provide a meaningful summary of the behavior )
+
+   
+```{r echo = F, eval = FALSE} 
+#leave echo = FALSE and eval = FALSE on homework
+
+#create a dataframe from all possible combinations of the supplied vectors
+df <- expand.grid(alpha = c(0.5, 0.8, 1, 4, 10),
+                  beta = c(0.5,  0.8, 1, 4,  10),
+                  x = seq(0, 1, 0.05))
+
+#calculate the beta PDF for each combination of alpha and beta 
+
+df <- df %>% 
+      mutate(betapdf = dbeta(x, alpha, beta ))
+
+
+ 
+ggplot(data = df,
+       mapping=aes(x = x, y = betapdf ) )+
+      geom_line()+
+      facet_grid(alpha ~ beta,
+                 scales = "free",
+                 labeller = labeller(alpha = label_both,
+                                     beta = label_both ) )
+
+```
+
+c. Since the beta distribution is a valid PDF, it must integrate to 1. In other words, it must be the case that 
+\begin{align*}
+\int\limits_{0}^{1} x^{\alpha - 1} (1-x)^{\beta - 1} dx &= 
+     \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha + \beta)}.
+\end{align*}
+
+   Use this fact to show that the $rth$ moment of the Beta is given by
+
+\begin{align*}
+E\left[ X^{r} \right] &= \frac{\Gamma(\alpha + r)}{\Gamma(\alpha)} \times \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha + \beta + r) }.
+\end{align*}
+
+d. Use your result from part c. to show that
+\begin{align*}
+\mu      &= E\left[ X \right] =  \frac{\alpha}{\alpha + \beta}, \\
+\sigma^2 &= Var\left[ X \right] \\
+         &= \frac{\mu \: (1-\mu)}{\alpha + \beta + 1}
+\end{align*}
