@@ -1,0 +1,52 @@
+---
+title: "Problem Section 1"
+subtitle:  "Joint, Marginal and Conditional PMF"
+graphics: yes
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+* * * 
+### Instructions
+
+Please answer the following questions in the order in which they are posed. Add a few empty lines below each and write your answers there. Focus on answering in complete sentences. You will also need scratch paper/pen to work out the answers before typing it.
+
+For help with formatting documents in RMarkdown, please consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/). Another option is to search using Google. 
+
+* * *
+
+### Exercises 
+
+1. A fair coin is tossed four times. $X$ is the number of heads that come up on the first three tosses and $Y$ is the number of heads that come up on tosses 2, 3, 4. 
+
+   a. Make a table showing the joint PMF of $\langle X, Y \rangle$. 
+   
+   b. Find the marginal distribution of $X$ and also of $Y$.
+   
+   c. Determine the conditional distribution $f(x|y)$ for $y = 2$. 
+
+
+2. A physics professor has just given an exam to fifty students enrolled in a thermodynamics class. From past experience, she has reason to believe that the scores will be
+normally distributed with $\mu = 80.0$ and $\sigma = 5.0$. Students scoring ninety or above will
+receive A’s, between eighty and eighty-nine, B’s, and so on. What are the expected
+values and variances for the numbers of students receiving each of the five letter
+grades? Support your answer.
+
+
+3. Suppose $X$ and $Y$ are discrete random variables with joint PMF given by the formula
+$$f(x,y) = \frac{4!}{x! \:y! \:(4-x-y)!} \left(\frac{1}{2} \right)^{x} \left(\frac{1}{3} \right)^{y} \left(\frac{1}{6} \right)^{4-x-y}$$
+where $x$, $y$ take values $0,1,2,3,4$ but are constrained by the requirement that $x+y \leq 4$.
+
+a. Show that  
+$$\frac{4!}{x! \:y! \:(4-x-y)!} = \binom{4}{x} \cdot \binom{4-x}{y}.$$
+(This equality should help us understand why $\frac{4!}{x! \:y! \:(4-x-y)!}$ counts the number of outcomes which have $x$ A's and $y$ B's in a trinomial experiment with 4 independent trials.)
+
+b. We showed in class that $X \sim Binom(4, \frac{1}{2})$. 
+
+i. Show that the marginal distribution of $Y$ is also in the binomial family. That is, show that $Y \sim Binom(4, \frac{1}{3})$.
+
+ii. Show that the conditional distribution of $Y$ given $X=x$ is also in the binomial family. Specifically show that 
+$$f(y | x) = \binom{4-x}{y} \left(\frac{2}{3} \right)^{y} \left(\frac{1}{3} \right)^{4 - x - y}, \ \ y = 0, 1, 2, \dots, ,4-x.$$
