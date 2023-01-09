@@ -1,0 +1,174 @@
+---
+title: "Problem Section 1 Key"
+subtitle:  "Joint, Marginal and Conditional"
+graphics: yes
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+* * * 
+### Instructions
+
+Please answer the following questions in the order in which they are posed. Add a few empty lines below each and write your answers there. Focus on answering in complete sentences. You will also need scratch paper/pen to work out the answers before typing it.
+
+For help with formatting documents in RMarkdown, please consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/). Another option is to search using Google. 
+
+* * *
+
+### Exercises 
+
+1. A fair coin is tossed four times. $X$ is the number of heads that come up on the first three tosses and $Y$ is the number of heads that come up on tosses 2, 3, 4. 
+
+   a. Make a table showing the joint PMF of $\langle X, Y \rangle$. 
+   
+   \begin{tabular}{|c|c|c|c|c|}
+   \hline
+    & X=0 & X=1 & X=2 & X=3 \\
+   \hline
+   Y=0 & `r .5^4` & `r .5^3*.5` & 0 & 0 \\
+   Y=1 & `r .5^3*.5` & `r .5^4 + .5^2*.5^2*2` & `r .5*.5^2*2*.5` & 0 \\
+   Y=2 & 0 & `r .5*.5^2*2*.5` & `r .5^4 + .5^2*.5^2*2` & `r .5^4` \\
+   Y=3 & 0 & 0 & `r .5^3*.5` & `r .5^4` \\
+   \hline
+   \end{tabular}
+   
+   By the multiplication rule there are $$2 \times 2 \times 2 \times 2 = 2^{4} = 16$$ possible outcomes in this sample space. Each outcome is equally likely and therefore the probabilities of the various $(x,y)$ combinations can be deduced by simply counting the number of outcomes that would result in this value.
+   
+   For example, the outcomes that lead to $x=1, y=2$ are HTTH, THTH, TTHH, which gives a probability of 3/16.
+
+   
+   b. Find the marginal distribution of $X$ and also of $Y$.
+   
+   We can find the marginal distributions by simply adding the probabilities along the rows or the columns. However, we can also recognize that since $X$ is the number of heads in 3 tosses, it is a binomial random variable. Hence it's probabilities are given by the $Binom(3, \frac{1}{2})$ distribution.
+   
+   \begin{tabular}{|c|c|c|c|c|}
+   \hline
+    & X=0 & X=1 & X=2 & X=3 \\
+    \hline
+   $f_x(x)$ & `r dbinom(0,3,.5)` & `r dbinom(1,3,.5)` & `r dbinom(2,3,.5)` & `r dbinom(3,3,.5)` \\
+   \hline
+   \end{tabular}
+   
+   \begin{tabular}{|c|c|c|c|c|}
+   \hline
+    & Y=0 & Y=1 & Y=2 & Y=3 \\
+    \hline
+   $f_y(y)$ & `r dbinom(0,3,.5)` & `r dbinom(1,3,.5)` & `r dbinom(2,3,.5)` & `r dbinom(3,3,.5)` \\
+   \hline
+   \end{tabular}
+   
+   
+   c. Determine the conditional distribution $f(x|y)$ for $y = 2$. 
+   
+$$
+f(x|y=2) = \frac{f(x,y=2)}{f_y(2)} = \frac{f(x,y=2)}{0.375}
+$$
+Thus using the values from our table in part a we have:
+
+\begin{tabular}{|c|c|c|c|c|}
+   \hline
+    & X=0 & X=1 & X=2 & X=3 \\
+    \hline
+   $f(x|y=2)$ & 0 & `r (.5*.5^2*2*.5)/.375` & `r (.5^4 + .5^2*.5^2*2)/.375` & `r .5^4/.375` \\
+   \hline
+   \end{tabular}
+
+
+2. A physics professor has just given an exam to fifty students enrolled in a thermodynamics class. From past experience, she has reason to believe that the scores will be
+normally distributed with $\mu = 80.0$ and $\sigma = 5.0$. Students scoring ninety or above will
+receive A’s, between eighty and eighty-nine, B’s, and so on. What are the expected
+values and variances for the numbers of students receiving each of the five letter
+grades? Support your answer.
+
+First we will denote the probability for falling into each grade bucket using the probabilities calculated from a normal distribution. We will assume that the scores are unrestricted and can extend to $\pm \infty$ when doing the calculations. 
+
+We have:
+
+$\pi_a$ = `r pnorm(90,80,5,lower.tail=F)`
+$\pi_b$ = `r -diff(pnorm(c(90,80),80,5))`
+$\pi_c$ = `r -diff(pnorm(c(80,70),80,5))`
+$\pi_d$ = `r -diff(pnorm(c(70,60),80,5))`
+$\pi_f$ = `r pnorm(60,80,5,lower.tail=T)`
+
+```{r}
+pi_a = pnorm(90,80,5,lower.tail=F)
+pi_b = -diff(pnorm(c(90,80),80,5))
+pi_c = -diff(pnorm(c(80,70),80,5))
+pi_d = -diff(pnorm(c(70,60),80,5))
+pi_f = pnorm(60,80,5,lower.tail=T)
+```
+
+
+Denote the random variables $X_A, X_B, X_C, X_D, X_F$ which correspond to the number of students who received each of those letter grades in the class of 50. We thus have that:
+
+$$
+(X_A, X_B, X_C, X_D, X_F) \sim Multinom(n=50,k=5,\pi = (\pi_a,\pi_b,\pi_c,\pi_d,\pi_f))
+$$
+
+Now using the properties of the multinomial distribution we have:
+$$X_i \sim Binom(n, \pi_i).$$ (Ref: Thm 14.1)
+Therefore
+
+$E(X_i) = n\pi_i$
+$Var(X_i) = n\pi_i(1-\pi_i)$
+
+Using our values for $\pi$ above, we can easily calculate these values. 
+
+```{r}
+#Calculate the real values here
+E_X_a <- 50*pi_a
+var_X_a <- 50*pi_a*(1-pi_a)
+```
+
+We should thus expect `r E_X_a` number of students who receives an A, give or take `r sqrt(var_X_a)`
+
+
+3. Suppose $X$ and $Y$ are discrete random variables with joint PMF given by the formula
+$$f(x,y) = \frac{4!}{x! \:y! \:(4-x-y)!} \left(\frac{1}{2} \right)^{x} \left(\frac{1}{3} \right)^{y} \left(\frac{1}{6} \right)^{4-x-y}$$
+where $x$, $y$ take values $0,1,2,3,4$ but are constrained by the requirement that $x+y \leq 4$.
+
+a. Show that  
+$$\frac{4!}{x! \:y! \:(4-x-y)!} = \binom{4}{x} \cdot \binom{4-x}{y}.$$
+(This equality should help us understand why $\frac{4!}{x! \:y! \:(4-x-y)!}$ counts the number of outcomes which have $x$ A's and $y$ B's in a trinomial experiment with 4 independent trials.)
+
+We may show the right hand side (RHS) is the same as the LHS by using the definition of the binomial function: 
+
+$$
+\binom{4}{x} \cdot \binom{4-x}{y} = \frac{4!}{x!(4-x)!}\frac{(4-x)!}{y!(4-x-y)!} = \frac{4!}{x!y!(4-x-y)!}
+$$
+
+b. We showed in class that $X \sim Binom(4, \frac{1}{2})$. Show that the conditional distribution of $Y$ given $X=x$ is also in the binomial family. Specifically show that 
+$$f(y | x) = \binom{4-x}{y} \left(\frac{2}{3} \right)^{y} \left(\frac{1}{3} \right)^{4 - x - y}, \ \ y = 0, 1, 2, \dots, ,4-x.$$
+
+We know that:
+
+$$
+f(y|x) = \frac{f(x,y)}{f(x)}
+$$
+
+Thus we may plug in the distributions and proceed with simplifying.
+
+$$
+f(y|x) = \frac{\frac{4!}{x! \:y! \:(4-x-y)!} \left(\frac{1}{2} \right)^{x} \left(\frac{1}{3} \right)^{y} \left(\frac{1}{6} \right)^{4-x-y}}{\binom{4}{x}(\frac{1}{2})^x(\frac{1}{2})^{4-x}}
+$$
+
+Using part b we know we can rewrite this as:
+
+$$
+f(y|x) = \frac{\binom{4}{x} \cdot \binom{4-x}{y} \left(\frac{1}{2} \right)^{x} \left(\frac{1}{3} \right)^{y} \left(\frac{1}{6} \right)^{4-x-y}}{\binom{4}{x}(\frac{1}{2})^x(\frac{1}{2})^{4-x}}
+$$
+
+After some cancelling out terms on the top and bottom we have:
+
+\begin{align*}
+f(y|x) &= \frac{\binom{4-x}{y}  \left(\frac{1}{3} \right)^{y} \left(\frac{1}{6} \right)^{4-x-y}}{(\frac{1}{2})^{4-x}} \\
+&= \frac{\binom{4-x}{y}  \left(\frac{1}{3} \right)^{y} \left(\frac{1}{2} \right)^{4-x-y}\left(\frac{1}{3} \right)^{4-x-y}}{(\frac{1}{2})^{4-x}} \\
+&= \binom{4-x}{y}  \left(\frac{1}{3} \right)^{y} \left(\frac{1}{2} \right)^{-y}\left(\frac{1}{3} \right)^{4-x-y}\\
+&= \binom{4-x}{y}  \left(\frac{2}{3} \right)^{y}\left(\frac{1}{3} \right)^{4-x-y}
+\end{align*}
+
+Where this mass function is valid for values $y=0,1,2,\dots, 4-x$
+
