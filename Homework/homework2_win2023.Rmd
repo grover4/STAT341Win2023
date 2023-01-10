@@ -36,7 +36,7 @@ uniformly distributed random variables. Let $X_1$ equal the number of $U_i$ less
 .331, $X_2$ equal the number between .331 and .820, and $X_3$ equal the number greater than .820.
 
 
-   a. Calculate, using, R the probability of observing $X_1 = 354, X_2 = 492, X_3 = 192$. Be sure to show your code. State the joint distribution before launching into calculations. 
+   a. Calculate, using, R the probability of observing $X_1 = 354, X_2 = 492, X_3 = 183$. Be sure to show your code. State the joint distribution before launching into calculations. 
    
    b. Calculate, using R as a calculator, the expected values and standard deviation of $X_2$? Be sure to show your code. State the marginal distribution before launching into calculations.
    
