@@ -1,0 +1,46 @@
+---
+title: "Problem Section 2"
+subtitle:  "Independence"
+graphics: yes
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+* * * 
+### Instructions
+
+Please answer the following questions in the order in which they are posed. Add a few empty lines below each and write your answers there. Focus on answering in complete sentences. You will also need scratch paper/pen to work out the answers before typing it.
+
+For help with formatting documents in RMarkdown, please consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/). Another option is to search using Google. 
+
+* * *
+
+### Exercises 
+
+1. Consider an electronic system with two identical components. The system fails whenever both components fail. The manufacturer has a money-back guarantee for the first 1,000 hours of operation. Let the failure times for the two components be $X$ and $Y$ respectively and assume they are independent exponential random variables with rate $\lambda$.
+
+a. As a function of $\lambda$, what is the probability that the manufacturer has to replace the system?
+
+b. If we want the probability from part a to be at most 1%, what does $\lambda$ have to be?
+
+
+
+2. A mason is contracted to build a patio retaining wall. Plans call for the base of the wall to be a row of fifty 10-inch bricks, each separated by $\frac{1}{2}$ inch thick mortar. Suppose that the bricks used are randomly chosen from a
+population of bricks whose mean length is 10 inches and
+whose standard deviation is $\frac{1}{32}$ inch. Also, suppose that the
+mason, on the average, will make the mortar $\frac{1}{2}$ inch thick,
+but that the actual dimension will vary from brick to brick,
+the standard deviation of the thicknesses being $\frac{1}{16}$ inch. What is the standard deviation of $L$, the length of the first
+row of the wall? What assumption are you making?
+
+2. Suppose $X$ and $Y$ are independent random variables, with $Var\left[X \right] = Var\left[Y \right] =1$. Consider the new random variable formed by the linear transformation $$W = c\:X + (1-c)\:Y.$$
+Find the value of $c$  that minimizes the variance of $W$. 
+
+3. A gambler plays n hands of poker. If she wins the kth hand she collects k dollars, while if she loses it,
+she collects nothing. Let T denote the total amount she wins in n hands. Assuming that her chances of
+winning each hand are constant (equal to p), find E(T) and Var(T). What would be a fair price for
+playing this game?
+
