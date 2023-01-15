@@ -1,0 +1,70 @@
+---
+title: "Homework 3"
+subtitle:  "Independence"
+graphics: yes
+output: pdf_document
+header-includes:
+    - \usepackage{amsmath,diagbox}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+* * * 
+### Instructions
+
+Please answer the following questions in the order in which they are posed. Add a few empty lines below each and write your answers there. \textbf{Focus on answering in complete sentences and show work whether we ask for it or not}. You will also need scratch paper/pen to work out the answers before typing it.
+
+For help with formatting documents in RMarkdown, please consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/). Another option is to search using Google. 
+
+* * *
+
+### Exercises 
+
+1. The random variables $X$ and $Y$ are independent, each taking the values 1, 2 or 3. Complete the following table of the joint PMF. Show your work for each entry below the table.
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|ccc|} \hline
+\diagbox{$y$}{$x$} & 1 & 2 & 3 \\ \hline
+1 & 0.03 & 0.04 & 0.03 \\
+2 & 0.15 & (b) & (c) \\
+3 & (a) & (d) & (e) \\ \hline
+\end{tabular}
+\end{table}
+
+2. Suppose the probabilistic behavior of $\langle X, Y \rangle$ is governed by the joint PDF
+$$f(x,y) = c x^2\: y^4\:e^{-y}\:e^{-\frac{x}{2}} \ \ \ 0 < x, \ 0 < y.$$
+
+a. Determine $c$. Show work.
+
+\emph{Hint: you will need to remember properties of the Gamma function $\Gamma(k)$  which is defined for $k > 0$ as: }
+$$\Gamma(k) = \int\limits_{0}^{\infty} x^{k-1} e^{-x} dx$$
+
+b. Are $X$ and $Y$ are independent? Explain.
+
+
+3. Two friends - let's call them Henry and Vincent - agree to meet at Tully's for coffee. Suppose that the random variables 
+$$X =  \mbox{the time that Henry arrives at Tully's and}$$
+$$Y = \mbox{the time that Vincent arrives at Tully's}$$
+are independent uniform random variables on the interval $[5,6]$. 
+(The units are hours after noon)
+
+
+a. Calculate the probability that both of them arrive before 5:30 PM.
+
+b. If neither of them is willing to wait more than 10 minutes for the other to show up, what is the probability they have a coffee together? That is, what is the probability they arrive within 10 minutes of each other.
+
+\emph{Hint: Here you want to find the probability that $|X-Y|$ is less than some number. }
+
+
+4. An individual makes 100 check transactions between receiving his December and his January bank
+statements. Rather than subtracting the amounts exactly, he rounds off each checkbook entry to the
+nearest dollar. Let $X_i$ denote the round off error on the $ith$ check. A reasonable assumption is that 
+$$X_i \sim Unif\left(-\frac{1}{2}, \frac{1}{2} \right)$$
+independently of each other.
+
+Use the Bienaymé-Chebyshev inequality to get an upper bound for the probability that the
+accumulated error after his 100 transactions is $5 or more. Show work.
