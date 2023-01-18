@@ -1,0 +1,175 @@
+---
+title: "Problem Section 2"
+subtitle:  "Independence"
+graphics: yes
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+* * * 
+### Instructions
+
+Please answer the following questions in the order in which they are posed. Add a few empty lines below each and write your answers there. Focus on answering in complete sentences. You will also need scratch paper/pen to work out the answers before typing it.
+
+For help with formatting documents in RMarkdown, please consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/). Another option is to search using Google. 
+
+* * *
+
+### Exercises 
+
+1. Consider an electronic system with two identical components. The system fails whenever both components fail. The manufacturer has a money-back guarantee for the first 1,000 hours of operation. Let the failure times for the two components be $X$ and $Y$ respectively and assume they are independent exponential random variables with rate $\lambda$.
+
+a. As a function of $\lambda$, what is the probability that the manufacturer has to replace the system?
+
+We know that the manufacturer will replace the system if both components fail before 1000 hours. Thus we wish to find 
+$$
+P(X<1000 \cap Y<1000)
+$$
+Since these are independent random variables we know:
+
+$$
+P(X<1000 \cap Y<1000) = P(X<1000)\times P(Y<1000)
+$$
+
+We know for an exponential random variable, X, with rate parameter $\lambda$, 
+$$
+F(x) = P(X<x) = 1 - exp(-\lambda x)
+$$
+
+Thus the probability that both components fail before 1,000 hours is:
+
+$$
+P(X<1000 \cap Y<1000) = ( 1-exp(-1000\lambda) )\times ( 1-exp(-1000\lambda) ) = ( 1-exp(-1000\lambda) )^2
+$$
+
+b. If we want the probability from part a to be at most 1%, what does $\lambda$ have to be?
+
+We wish to solve:
+
+$$
+( 1-exp(-1000\lambda) )^2 = .01
+$$
+```{r}
+lam_fun <- function(x){(1-exp(-1000*x))^2}
+x <- seq(.00005,.1,.001)
+ggplot(data=NULL,aes(x=x,y=lam_fun(x)))+geom_line()
+```
+
+
+
+Solving this we get: 
+
+\begin{align*}
+( 1-exp(-1000\lambda) )^2 &= .01 \\
+1-exp(-1000\lambda) &= \sqrt{.01} = .1 \\
+exp(-1000\lambda) & = 1-.1 \\
+-1000\lambda &= ln(.9) \\
+\lambda &= \frac{ln(.9)}{-1000} = `r -log(.9)/1000` 
+\end{align*}
+
+Thus for a 1% failure rate we require $\lambda = `r -log(.9)/1000`$. Since $\lambda$ is the rate of failures per unit time, we want $\lambda \leq `r -log(.9)/1000`$ for a failure rate of at most 1%.
+
+2. A mason is contracted to build a patio retaining wall. Plans call for the base of the wall to be a row of fifty 10-inch bricks, each separated by $\frac{1}{2}$ inch thick mortar. Suppose that the bricks used are randomly chosen from a
+population of bricks whose mean length is 10 inches and
+whose standard deviation is $\frac{1}{32}$ inch. Also, suppose that the
+mason, on the average, will make the mortar $\frac{1}{2}$ inch thick,
+but that the actual dimension will vary from brick to brick,
+the standard deviation of the thicknesses being $\frac{1}{16}$ inch. What is the standard deviation of $L$, the length of the first
+row of the wall? What assumption are you making?
+
+If we assume that each brick and mortar's length/thickness is independet of the others we can utilize the independence properties of random variables to find $SD(L)$.
+
+Since there is morter in between each of the bricks, there will be 49 instances of mortar laid down, and 50 total bricks.
+
+If we denote $B_i$ as the length of the i'th brick, and $M_j$ the thickness of the j'th mortar we have that:
+
+$$
+L = B_1 + \dots + B_{50} + M_1 + \dots + M_{49}  = \sum_{i=1}^{50} B_i + \sum_{j=1}^{49}M_j
+$$
+
+Now we may find the variance of L. Here since we know that all the bricks and mortar are independent of eachother, we can find the variance of the sum by taking the sum of the variances. 
+
+$$
+Var(L) = Var(\sum_{i=1}^{50} B_i + \sum_{j=1}^{49}M_i) = \sum_{i=1}^{50}Var(B_i) + \sum_{j=1}^{49}Var(M_j)
+$$
+
+Since we know that each $B_i$ has variance $(1/32)^2$ and each $M_i$ has variance $(1/16)^2$ we have:
+
+$$
+Var(L) = \sum_{i=1}^{50}(1/32)^2 + \sum_{j=1}^{49}(1/16)^2 = 50(1/32)^2 + 49(1/16)^2
+$$
+
+Thus we have that $SD(L) = \sqrt{50(1/32)^2 + 49(1/16)^2} = `r sqrt(50*(1/32)^2 + 49*(1/16)^2)`$ inches. 
+
+3. Suppose $X$ and $Y$ are independent random variables, with $Var\left[X \right] = Var\left[Y \right] =1$. Consider the new random variable formed by the linear transformation $$W = c\:X + (1-c)\:Y.$$
+Find the value of $c$  that minimizes the variance of $W$. 
+
+First we may proceed by finding the variance of W using the properties of independent random variables and variance.
+
+$$
+Var(W) = Var(cX+(1-c)Y) = c^2Var(X) + (1-c)^2Var(Y)
+$$
+Thus we have that $Var(W) = c^2 + (1-c)^2$ since both X and Y have variance 1.
+
+Thus we wish to minimize the expression $f(c) = c^2 + (1-c)^2$.
+
+After some simplification we can write this as:
+
+$$
+f(c) = c^2 + 1 - 2c + c^2 = 2c^2 - 2c + 1
+$$
+To minimize this we may begin by taking the first derivative of this function and setting it to zero.
+
+$$
+f'(c) = 4c - 2 = 0 \Rightarrow c = 1/2
+$$
+
+To check that c is a minimum, we must show that the second derivative of this function is positive.
+
+We have $f''(c) = 4 >0$ thus we have that $c=1/2$ minimizes the variance of W. Notice that this implies that the average of the two random variables is the best we can do to minimize this variance. 
+
+4. A gambler plays n hands of poker. If she wins the kth hand she collects k dollars, while if she loses it,
+she collects nothing. Let T denote the total amount she wins in n hands. Assuming that her chances of
+winning each hand are constant (equal to p), find E(T) and Var(T). What would be a fair price for
+playing this game?
+
+Denote the random-variable, $X_k$ which represents how much the gambler wins in the k'th hand. This value will be k with probability p, and 0 with probability 1-p. Thus we have that for each k:
+
+$$
+E(X_k) =k\times p + 0 \times (1-p)= kp 
+$$
+For the variance, we may use the formula, $Var(X_k) = E(X_k^2) - [E(X_k)]^2$. We have that $E[X_k^2] = k^2\times p + 0^2\times (1-p) = k^2p$. Thus we have: 
+
+$$
+Var(X_k) = k^2p - k^2p^2 = k^2p(1-p)
+$$
+We can now use the linearity of expectation property to find $E(T)$.
+
+\begin{align*}
+E(T) &= E(X_1 + \dots + X_{n}) \\
+&= E(X_1)+\dots+E(X_n) \\
+&= p + 2p + \dots + np \\
+&= p(1+2+\dots + n) \\
+&= p\frac{n(n+1)}{2}
+\end{align*}
+
+For the variance of T, since each hand is independent we have:
+
+\begin{align*}
+Var(T) &= Var(X_1+\dots + X_n) \\
+&= Var(X_1) + \dots + Var(X_n) \\
+&= p(1-p) + 2^2p(1-p) + \dots + n^2p(1-p) \\
+&= p(1-p)(1+2^2 +\dots + n^2) \\
+&= p(1-p)\frac{n(n+1)(2n+1)}{6}
+\end{align*}
+
+
+Since the expected amount won is $p\frac{n(n+1)}{2}$ dollars for the n hands, we have that a fair price for entry would $p\frac{n(n+1)}{2}$ dollars. 
+
+
+
+
