@@ -34,17 +34,17 @@ a. Give an expression for $\hat{\theta}_0^{mom}$, the method of moments estimato
 b. Is your estimator from part a. an unbiased estimator for $\theta_0$?
 
 
-c. Find the variance of your estimator from part a. Is it a consistent estimator for $\theta_0$? (Hint:  you will need to find $Var\left[X \right]$ to answer this. ) 
+c. Find the variance of your estimator from part a. Is it a consistent estimator for $\theta_0$? 
 
-d. Based on the sample 0, 0, 1, 0, 1, 2, 1, 0, 0, calculate the value of $\hat{\theta}_0^{mom}$ for this sample.
+d. Based on the sample 0, 0, 1, 0, 1, 2, 1, 0, 0, calculate the value of $\hat{\theta}_0^{mom}$ for this sample. Also calculate the estimated standard error.
 
 2. Suppose $x_1 = 8.3, x_2 = 4.9, x_3 = 2.6, x_4 = 6.5$ are drawn independently from a two parameter uniform distribution:
 $$f(x) = \frac{1}{2 \theta_2} \ \ \ \theta_1 - \theta_2 < x < \theta_1 + \theta_2.$$
 
-Use the method of moments to find $\hat{\theta}_1^{mom}$ and $\hat{\theta}_2^{mom}$.
+   Use the method of moments to find $\hat{\theta}_1^{mom}$ and $\hat{\theta}_2^{mom}$.
 
 
-3. When sampling from a $Unif(0, \theta_0)$ distribution, we saw that the $X_{max}$ was a biased estimator of $\theta_0$ because
+3. \textbf{This problem has been edited since Friday 1/27} When sampling from a $Unif(0, \theta_0)$ distribution, we saw that the $X_{max}$ was a biased estimator of $\theta_0$ because
 $$E\left[X_{max} \right] = \frac{n}{n+1} \theta_0.$$
 
 a. Create an unbiased estimator based on $X_{max}$. Let's call this estimator $\hat{\theta}_0$. (Hint: an estimator can be based on random variables and numbers like $n$. The only thing off limits are unknown parameters)
@@ -58,8 +58,6 @@ $$bias = E\left[\hat{\theta}_0 \right] - \theta_0.$$
 The MSE measures how close the estimator falls on the average to the true $\theta_0$. 
 For unbiased estimators like $\hat{\theta}_0$, the MSE is simply the variance. Find the MSE of $X_{max}$.
 
-d. Show that despite being a biased estimator, $X_{max}$ has a smaller MSE compared to $\hat{\theta}_0$ uniformly for all possible values of $\theta_0$. In other words show that 
-$$MSE(X_{max}) < MSE(\hat{\theta}_0)$$
+d. Compare the MSE of $X_{max}$ with the MSE of $\hat{\theta}_0$.
 
-\emph{This part shows that to achieve a low MSE, we can sacrifice having some bias if the estimator has a relatively small variance. The additional penalty to the variance simply to get unbiasedness is not worth it. This is an example of the bias variance tradeoff.}
 
