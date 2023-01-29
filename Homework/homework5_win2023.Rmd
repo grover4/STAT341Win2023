@@ -75,7 +75,7 @@ b. Is $\hat{\pi}_0^{bayes}$ a consistent estimator?
 
 c. Based on the sample 1, 0, 1, 0, 1, calculate the value of $\hat{\pi}_0^{bayes}$ for this sample. Also calculate its estimated standard error. 
 
-4. (Bias variance trade-off) In this problem we will continue working with the model described in problem 2. Our focus will be on comparing the mean square error (MSE) of $\hat{\pi}_0^{bayes}$ with the MSE of 
+4. (Bias variance trade-off) In this problem we will continue working with the model described in problem 3. Our focus will be on comparing the mean square error (MSE) of $\hat{\pi}_0^{bayes}$ with the MSE of 
 $$\hat{\pi}_0^{mom} = \frac{X}{n}.$$ 
 
 a. Give expressions for the MSE of each estimator. Show your work clearly.
