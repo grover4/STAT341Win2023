@@ -1,0 +1,276 @@
+---
+title: "Problem Section 4 Key"
+subtitle:  "Estimation"
+graphics: yes
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+* * * 
+### Instructions
+
+Please answer the following questions in the order in which they are posed. Add a few empty lines below each and write your answers there. Focus on answering in complete sentences. You will also need scratch paper/pen to work out the answers before typing it.
+
+For help with formatting documents in RMarkdown, please consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/). Another option is to search using Google. 
+
+* * *
+
+### Exercises 
+
+1. Suppose $X_1, X_2, \dots, X_n$ are independent random variables with PMF
+\begin{eqnarray*}
+f(x) &=& \left\{ \begin{array}{cc}
+             \frac{1}{3} - \theta_0 & x = 0  \\
+             \frac{1}{3} & x =1 \\
+             \frac{1}{3} + \theta_0 & x =2 \end{array} \right.
+\end{eqnarray*}
+where you can assume $-\frac{1}{3} \leq \theta_0 \leq \frac{1}{3}$ so all probabilities are non-zero. 
+
+a. Give an expression for $\hat{\theta}_0^{mom}$, the method of moments estimator of $\theta_0$. (Hint: it is a function of $\bar{X}$ the sample average)
+
+We are estimating one parameter, so we must find the first expectation of of our RV X, to find the MoM estimator. 
+
+We have:
+
+$$
+E[X] = 0\times (\frac{1}{3} - \theta_0) + 1 \times   (\frac{1}{3}) + 2 \times  (\frac{1}{3} + \theta_0) = \frac{1}{3} + \frac{2}{3} + 2\theta_0 = 1+2\theta_0
+$$
+
+Now to find our MoM estimator, we will use our empirical estimator of $E[X]$, $\bar{x} = \frac{1}{n}\sum_{i=1}^nx_i$.
+
+Since we know that $E[X] \approx \bar{x}$ we can substitute into our above equation and solve for $\theta_0$, yielding us our estimator.
+
+Thus we are solving for $\theta_0$ in the equation:
+
+$$
+\hat{\theta_0}^{MoM} = \frac{\bar{x}-1}{2}
+$$
+
+In part b and c, we will now study $\hat{\theta_0}^{MoM}$ as an estimator, and thus we will replace $\bar{x}$ with $\bar{X}$.
+
+
+b. Is your estimator from part a. an unbiased estimator for $\theta_0$?
+
+To find out whether our estimator is unbiased, we must first find $E[\hat{\theta_0}^{MoM}]$. To begin we will consider $E[\bar{X}]$. 
+
+We have using the properties of linearity of expectation and because each X has the same distribution:
+
+$$
+E[\bar{X}] = E[\frac{1}{n}\sum_{i=1}^nX_i] = \frac{1}{n}E[\sum_{i=1}^nX_i] = E[X_1]
+$$
+We have that $E[X_1] = 1 + 2\theta_0$. Thus for our estimator $\hat{\theta_0}^{MoM}$ we have:
+
+$$
+E[\hat{\theta_0}^{MoM}] = E[\frac{\bar{X}-1}{2}] = \frac{E[\bar{X}]-1}{2} = \frac{2\theta_0}{2} = \theta_0
+$$
+Thus our estimator is unbiased. 
+
+c. Find the variance of your estimator from part a. Is it a consistent estimator for $\theta_0$? 
+
+We have for the Variance of our estimator as:
+
+$$
+Var(\hat{\theta_0}^{MoM}) = Var(\frac{\bar{X}-1}{2}) = \frac{1}{4}Var(\bar{X})
+$$
+
+Now we may find $Var(\bar{X})$ using the fact that each variable is independent and follows the same distribution:
+
+\begin{align*}
+Var(\bar{X}) &= Var(\frac{1}{n}\sum_{i=1}^n X_i) \\
+&= \frac{1}{n^2}Var(\sum_{i=1}^n X_i) \\
+&=\frac{1}{n^2}\sum_{i=1}^n Var(X_i)  \\
+&= \frac{1}{n}Var(X_1)
+\end{align*}
+
+Now we may find $Var(X) = E[X^2]-(E[X])^2$.
+
+We have for $E[X^2]$:
+
+\begin{align*}
+E[X^2] &= 0^2\times (\frac{1}{3} - \theta_0) + 1^2 \times   (\frac{1}{3}) + 2^2 \times  (\frac{1}{3} + \theta_0) \\
+&= \frac{1}{3} + \frac{4}{3} + 4\theta_0 \\
+&= \frac{5}{3} + 4\theta_0
+\end{align*}
+
+Thus we have that:
+
+$$
+Var(X) = \frac{5}{3} + 4\theta_0 - [1+2\theta_0]^2 = \frac{2}{3} - 4\theta_0^2
+$$
+
+Thus:
+
+$$
+Var(\hat{\theta_0}^{MoM}) = \frac{Var(\bar{X})}{4} = \frac{\frac{2}{3} - 4\theta_0^2}{4n}
+$$
+
+We see as n goes to infinity, $Var(\hat{\theta_0}^{MoM})\Rightarrow 0$. Since our estimator is also unbiased, thus it is consistent. 
+
+d. Based on the sample 0, 0, 1, 0, 1, 2, 1, 0, 0, calculate the value of $\hat{\theta}_0^{mom}$ for this sample. Also find the estimated standard error. 
+
+We have in this case that $\bar{x} = \frac{5}{9}$.
+
+Thus we have our estimate $\hat{\theta_0}^{MoM}$ as `r ((5/9)-1)/2`.
+
+We know the estimated SD will take the form:
+$$
+SD(\hat{\theta_0}^{MoM}) = \sqrt{Var(\hat{\theta_0}^{MoM})}
+$$
+
+Thus using our equations derived above, and our sample values we have that:
+
+$$
+\hat{SD}(\hat{\theta_0}^{MoM}) = \sqrt{\frac{\frac{2}{3} - 4\hat{\theta_0}^{2}}{4*9}}
+$$
+Plugging in our value for $\hat{\theta_0}^{MoM}$ we have:
+
+$\hat{SD}(\hat{\theta_0}^{MoM}) = `r sqrt((2/3 - 4*(((5/9)-1)/2)^2) /36)`$
+
+2. Suppose $x_1 = 8.3, x_2 = 4.9, x_3 = 2.6, x_4 = 6.5$ are drawn independently from a two parameter uniform distribution:
+$$f(x) = \frac{1}{2 \theta_2} \ \ \ \theta_1 - \theta_2 < x < \theta_1 + \theta_2.$$
+
+Use the method of moments to find $\hat{\theta}_1^{mom}$ and $\hat{\theta}_2^{mom}$.
+
+We are estimating 2 parameters in this case, so we must find the first 2 expectations (in order to have enough equations to solve for 2 unknowns).
+
+We know that for a Uniform RV X on $(\theta_1 - \theta_2,\theta_1 + \theta_2)$ (See Ch 10 of Stat 340 Notes):
+
+$$
+E[X] = \frac{(\theta_1 - \theta_2)+ (\theta_1 + \theta_2)}{2} = \theta_1
+$$
+
+We also know that:
+
+$$
+Var(X) = \frac{[(\theta_1 - \theta_2)- (\theta_1 + \theta_2)]^2}{12} = \frac{4\theta_2^2}{12} = \frac{\theta_2^2}{3}
+$$
+So we have that:
+
+$$
+E[X^2] = Var(X)+(E[X])^2 = \frac{\theta_2^2}{3} + \theta_1^2
+$$
+
+Thus we are solving the system of equations:
+
+\begin{align*}
+\frac{1}{n}\sum_{i=1}^nx_i &= \theta_1 \\
+\frac{1}{n}\sum_{i=1}^nx_i^2 &=  \frac{\theta_2^2}{3} + \theta_1^2
+\end{align*}
+
+In this case we have clearly that:
+
+$\hat{\theta_1^{MoM}} = \bar{x}$.
+
+Thus we are left with solving:
+
+$$
+\frac{1}{n}\sum_{i=1}^nx_i^2 = \frac{\theta_2^2}{3} + \theta_1^2 \Rightarrow \hat{\theta_2}^{MoM} = \sqrt{3([\frac{1}{n}\sum_{i=1}^nx_i^2] - \bar{x}^2)}
+$$
+
+So we have that:
+
+$\hat{\theta_1^{MoM}} = \bar{x}$ and $\hat{\theta_2}^{MoM} = \sqrt{3([\frac{1}{n}\sum_{i=1}^nx_i^2] - \bar{x}^2)}$
+
+3. When sampling from a $Unif(0, \theta_0)$ distribution, we saw that the $X_{max}$ was a biased estimator of $\theta_0$ because
+$$E\left[X_{max} \right] = \frac{n}{n+1} \theta_0.$$
+
+a. Create an unbiased estimator based on $X_{max}$. Let's call this estimator $\hat{\theta}_0$. (Hint: an estimator can be based on random variables and numbers like $n$. The only thing off limits are unknown parameters)
+
+For our estimator, $\hat{\theta_0}$ to be unbiased we must have that $E[\hat{\theta_0}] = \theta_0$. From the info in the problem we know:
+
+$$
+E\left[X_{max} \right] = \frac{n}{n+1} \theta_0 \Rightarrow E[\frac{n+1}{n}X_{max}] = \theta_0
+$$
+
+Thus we have the unbiased estimator $\frac{n+1}{n}X_{max}$.
+
+b. Derive the variance of $\hat{\theta}_0$. Is its variance larger or smaller than the $Var\left[ X_{max} \right]$?
+
+It was mentioned in class that $Var(X_{max}) = \frac{n\theta_0^2}{(n+2)(n+1)^2}$. (See below for derivation).
+
+We wish to find $Var(\hat{\theta}_0) = Var(\frac{n+1}{n}X_{max})$.
+
+By properties of Variance we know:
+
+\begin{align*}
+Var(\frac{n+1}{n}X_{max}) &= (\frac{n+1}{n})^2Var(X_{max}) \\
+&= (\frac{n+1}{n})^2\frac{n\theta_0^2}{(n+2)(n+1)^2} \\
+&= \frac{\theta_0^2}{n(n+2)}
+\end{align*}
+
+Since we know that $\frac{n+1}{n} > 1$ we have that $Var(\hat{\theta}_0)= (\frac{n+1}{n})^2Var(X_{max})> Var(X_{max})$
+
+To find the variance of $X_{max}$ we must find $E[X_{max}]$ and $E[X_{max}^2]$.
+
+From the problem we know $E[X_{max}] = \frac{n}{n+1}\theta_0$.
+
+Now we must find $E[X_{max}^2]$. To do this we will first derive the density function of the max. 
+
+We know by our theorems from class that:
+
+$$
+f_{max}(x) = n[F(x)]^{n-1}f(x)
+$$
+For a $Uniform(0,\theta_0)$ dist we have that $f(x) = \frac{1}{\theta_0}$ and $F(x) = \frac{x}{\theta_0}$ for $0\leq x \leq\theta_0$.
+
+Thus we have that:
+
+$$
+f_{max}(x) = n[\frac{x}{\theta_0}]^{n-1}\frac{1}{\theta_0}
+$$
+
+So we must solve:
+
+$$
+E[X_{max}^2] = \int_0^{\theta_0} x^2 n[\frac{x}{\theta_0}]^{n-1}\frac{1}{\theta_0}dx
+$$
+
+Solving this integral we have:
+
+\begin{align*}
+\int_0^{\theta_0} x^2 n[\frac{x}{\theta_0}]^{n-1}\frac{1}{\theta_0}dx &=\frac{n}{\theta_0}\int_0^{\theta_0}\frac{x^{n+1}}{\theta_0^{n-1}} \\
+&=\frac{n}{\theta_0^{n}}\frac{x^{n+2}}{n+2}|_0^{\theta_0} \\
+&=\frac{n\theta_0^{n+2}}{(n+2)\theta_0^{n}} \\
+&=\frac{n\theta_0^2}{n+2}
+\end{align*}
+
+Thus we have that:
+
+$Var(X_{max}) =\frac{n\theta_0^2}{n+2} - (\frac{n}{n+1}\theta_0)^2$
+
+This will then simplify to the answer provided in class. 
+
+c. A common way to compare estimators is via the Mean Square Error (MSE) which is defined as
+$$MSE(\hat{\theta}_0) = (bias)^2 + Var\left[\hat{\theta}_0 \right]$$
+where the bias term is defined as
+$$bias = E\left[\hat{\theta}_0 \right] - \theta_0.$$
+The MSE measures how close the estimator falls on the average to the true $\theta_0$. 
+For unbiased estimators like $\hat{\theta}_0$, the MSE is simply the variance. Find the MSE of $X_{max}$.
+
+We have the bias of $Bias(X_{max}) = \frac{n}{n+1}\theta_0 - \theta_0 = \frac{-\theta_0}{n+1}$
+
+So putting this together with the Variance of $X_{max}$ we derived above we have that:
+
+$MSE(X_{max}) = \frac{n\theta_0^2}{(n+2)(n+1)^2} + \frac{\theta_0^2}{(n+1)^2}$
+
+
+d. Compare MSE of $\hat{\theta}_0$ against the MSE of $X_{max}$ 
+
+In this case, since we see that $\hat{\theta_0}$ is unbiased, this means that $MSE(\hat{\theta_0}) = Var(\hat{\theta_0}) = \frac{\theta_0^2}{n(n+2)}$.
+
+To compare the MSE's we can simply analyze the ratio $\frac{MSE(X_{max})}{MSE(\hat{\theta}_0)}$.
+
+Thus we are analyzing the ratio:
+
+\begin{align*}
+\frac{\frac{n\theta_0^2}{(n+2)(n+1)^2} + \frac{\theta_0^2}{(n+1)^2}}{\frac{\theta_0^2}{n(n+2)}} &= \frac{\frac{n}{(n+2)(n+1)^2} + \frac{1}{(n+1)^2}}{\frac{1}{n(n+2)}} \\
+&= \frac{\frac{2n+2}{(n+2)(n+1)^2}}{\frac{1}{n(n+2)}} \\
+&= \frac{n(2n+2)}{(n+1)^2} \\
+&= \frac{2n(n+1)}{(n+1)^2} \\
+&= \frac{2n}{n+1}
+\end{align*}
+
+This is larger than 1 whenever $n > 1$. So the MSE of $X_{max}$ is larger than the MSE of $\hat{\theta}_0$.
