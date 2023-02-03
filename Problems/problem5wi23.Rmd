@@ -55,6 +55,6 @@ to construct a 95% confidence interval for $\theta_0$.
 
    Hint: this just means rearrange terms inside the probability so you move $\theta_0$ to the middle of the inequalities. 
 
-c. Give an expression for the 90% confidence interval estimator for $\theta_0$.
+c. Give an expression for the 95% confidence interval estimator for $\theta_0$.
 
 d. Suppose our sample values are $x_1 = 0.2, x_2 = 0.9, x_3 = 1.9, x_4 = 2.2, x_5 = 4.7, x_6 = 5.1$. Calculate your interval for $\theta_0$ from part c. for this sample. 
