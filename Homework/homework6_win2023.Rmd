@@ -1,5 +1,5 @@
 ---
-title: "Homework 5"
+title: "Homework 6"
 subtitle:  "Point and Interval Estimation"
 graphics: yes
 output: pdf_document
