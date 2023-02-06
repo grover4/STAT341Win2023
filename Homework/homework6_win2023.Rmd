@@ -71,7 +71,8 @@ a. From each sample, calculate a 90% confidence interval for the mean PTSG (poin
 
 b. The following code represents the confidence intervals you calculated in part a.as horizontal line segments. Fill in the `labs` layer. Also add a vertical line corresponding to the true mean `PTSG` in red. (You will need to calculate this from the `MIAA05` data.)
 
-```{r}
+```{r eval=F}
+#remove eval=F once you have the previous code chunk entered
 ggplot(data=sample_summary)+
   geom_segment(mapping = aes(x = lower, 
                              xend = upper,
