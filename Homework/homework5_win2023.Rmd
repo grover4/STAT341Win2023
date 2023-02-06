@@ -1,6 +1,6 @@
 ---
 title: "Homework 5"
-subtitle:  "Estimation"
+subtitle:  "Point and Interval Estimation"
 graphics: yes
 output: pdf_document
 header-includes:
@@ -24,68 +24,76 @@ For help with formatting documents in RMarkdown, please consult [R Markdown: The
 
 ### Exercises 
 
-1. (MIAA basketball) The `MIAA05` dataset from the **fastR2** package contains statistics on each of the 134 players from the 2004-2005 season . In this problem we will consider modeling the players' free throw shooting percentage. The variable is called `FTPct`. It is the ratio of free throws made (`FT`) to free throws attempted (`FTA`). Please type `?MIAA05` in the Console for a description of the variables in the dataset.  
 
 
-   Since `FTPct` is a proportion, we will consider the Beta distribution:
-$$f(x) =  \frac{ \Gamma(\alpha_0 + \beta_0)}{\Gamma(\alpha_0) \: \Gamma(\beta_0)} \: x^{\alpha_0 - 1} \: (1 - x )^{\beta_0 - 1} \ \ \ 0 < x < 1.$$
+1. (Measurement error) A ph-meter is known to have systematic error^[this means it gives readings that are systematically higher or lower than what they should be] of size $\delta_0$. In order to estimate $\delta_0$, six measurements are made from a solution with pH **known** to be 4.84. 
 
-   a. Show that the method of moments estimators of $\alpha_0$ and $\beta_0$ are:
-\begin{align*}
-\hat{\alpha}_0^{mom} &= \bar{x} \left[ \frac{\bar{x} - s}{s - \bar{x}^2} \right],\\
-\hat{\beta}_0^{mom} &= \hat{\alpha}_0^{mom} \frac{1-\bar{x}}{\bar{x}}
-\end{align*}
+   The measurement model is that $X_1, X_2, \dots, X_6$ are independently drawn from a probability distribution with mean $\mu_0 = 4.84 + \delta_0$ and some standard deviation $\sigma_0$. In other words, you are being told that
+$$E\left[ X \right] = 4.84 + \delta_0, \ \ \ Var\left[X \right] = \sigma^2_0.$$
 
-   where $s = \frac{1}{n} \sum\limits_{i=1}^{n} x^2_i$.  
-
-   
-   \emph{Hint:} You can use without proof from homework 1 key:
-\begin{align*}
-E\left[ X \right] &= \frac{\alpha_0}{\alpha_0+\beta_0}\\
-E\left[X^2 \right] &= \frac{\alpha_0 (\alpha_0+1)}{(\alpha_0+\beta_0)\:(\alpha_0+\beta_0+1)}.
-\end{align*}
-
-   The remaining two parts involve coding. Be sure to show the code and output, however, suppress warnings and messages. 
-   
-   b. Make a histogram and a QQplot to assess the goodness of fit.
-   
-   c. Are there any players you should remove from the data before attempting the analysis? Decide on an elimination rule, apply it, and repeat the analysis. Do you like this fit better? 
-   
-2. (Unbias your estimator) Let $X \sim Binom(n, \pi_0)$.
-
-a.  Show, with justification, that
-$$E\left[ \frac{X}{n} \left(1 - \frac{X}{n} \right) \right] = \frac{(n-1)\:\pi_0\:(1-\pi_0)}{n}$$ 
-    
-b. Suppose we want an unbiased estimator for $\pi \:(1-\pi).$ Use your answer from (a) to construct such an estimator.
+  a. Find the method of moments **estimator** of $\delta_0$. Show your work.
   
-3. (Bayes estimator) Let $X_1, X_2,\dots, X_n$ be independent Bernoulli random variables drawn from the PMF:
-\begin{align*}
-f(x) &= \left\{ \begin{array}{cc} 
-          (1- \pi_0) & x = 0 \\
-           \pi_0    & x=1 \end{array} \right.
-\end{align*}
+  b. Is your estimator from part a. unbiased for $\delta_0$? Show your work.
+  
+  c. Is your estimator from part a. consistent? Show your work.
+  
 
-   Consider the Bayesian estimator of $\pi_0$^[don't worry about how to derive this estimator]: 
-$$\hat{\pi}_0^{bayes} = \frac{X+1}{n+2}$$ 
-where $X = X_1 + X_2 + \dots + X_n$ is $Binom(n, \pi_0)$.
+2. (CLT) Suppose that the time (in days) until a component fails has a gamma distribution with shape $k=5$ and rate $\lambda=\frac{1}{10}$. When a component fails, it is immediately replaced by a new component. Use the Central Limit Theorem to estimate the probability that 40 components will together be sufficient to last for at least 6 years. (You may assume a year has exactly 365.25 days)
 
-a. Is $\hat{\pi}_0^{bayes}$ an unbiased estimator of $\pi_0$? If not, is it asymptotically unbiased?
-
-b. Is $\hat{\pi}_0^{bayes}$ a consistent estimator?
-
-c. Based on the sample 1, 0, 1, 0, 1, calculate the value of $\hat{\pi}_0^{bayes}$ for this sample. Also calculate its estimated standard error. 
-
-4. (Bias variance trade-off) In this problem we will continue working with the model described in problem 3. Our focus will be on comparing the mean square error (MSE) of $\hat{\pi}_0^{bayes}$ with the MSE of 
-$$\hat{\pi}_0^{mom} = \frac{X}{n}.$$ 
-
-a. Give expressions for the MSE of each estimator. Show your work clearly.
+   **You may use R to perform the calculations but be sure to set up the problem mathematically first, and show your work and code. **
    
+3. The `MIAA05` basketball data contains statistics on 134 players in the MIAA 2005 Men's Basketball season. The following code chooses 100 different samples of size 15 from the dataset. From each sample, the mean and standard deviation of `PTSG` is calculated.
 
-b. For $n = 10$, plot the MSE of both estimators on the same graph as a function of $\pi_0$. Describe (just visually) the $\pi_0$ values for which the MSE is smaller for the Bayes estimator. Repeat for $n=1,000$. Don't forget to the label the plot, and make it easy for the reader to know which estimator is being represented by which curve.
-   
-   \emph{This example illustrates the bias variance tradeoff. Sometimes a biased estimator does better than an unbiased one, if it has a smaller variance!}
-   
-   
+```{r include = FALSE}
 
- 
+set.seed(853)                           # set random number seed
+nsamp<-100                              #number of distinct samples
+sampsize<-15                            #size of each sample 
+
+## Use lapply to repeatedly draw a sample from MIAA05
+## From each sample, calculate the mean and the standard deviation of ##PTSG and return a list where each element is a dataframe with the ##sample mean and sample sd for each sample
+
+##take a look at x once you create it to see what it looks like
+
+x <- lapply(X=1:nsamp , FUN=function(X){
+            new_sample <- sample(MIAA05$PTSG, size = sampsize, replace=F)
+            xbar <- mean(new_sample)
+            s2 <- sd(new_sample)
+            data.frame(sample_mean = xbar, sample_sd = s2) })
+
+## bind the rows of the individual data frames contained in the list ## to create one dataframe. 
+
+sample_summary <- do.call(rbind,x)
+```
+
+a. From each sample, calculate a 90% confidence interval for the mean PTSG (points per game) of MIAA players. Add the lower and upper limits of the confidence interval as additional columns called `lower` and `upper` in the `sample_summary` dataframe. Then print the first 10 rows of the dataframe.  (Show your code and output)
+
+
+b. The following code represents the confidence intervals you calculated in part a.as horizontal line segments. Fill in the `labs` layer. Also add a vertical line corresponding to the true mean `PTSG` in red. (You will need to calculate this from the `MIAA05` data.)
+
+```{r}
+ggplot(data=sample_summary)+
+  geom_segment(mapping = aes(x = lower, 
+                             xend = upper,
+                             y = 1:nsamp,
+                             yend = 1:nsamp)) +
+  labs(x = " ",
+       y = " ",
+       title = " ") +
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+```
+
+c. Of the confidence intervals you calculated in part a., how many contain the true mean `PTSG`? Write code to calculate this and show your code and answer below. 
+
+
+d. Suppose you bump up the sample size from 15 to 25. Would you *expect* more intervals to cover the true mean `PTSG`? Why or why not?
+
+4. Suppose you want to estimate the mean shoe size of adults in a city. You would like to have a 95% confidence interval that is no wider than 0.5 shoe sizes (the margin of error would be at most 0.25). How large a sample must you get?
+
+   a. This calculation will require that you make a guess about what approximately the standard deviation will be. What are the implications of guessing too high or too low? Should you guess on the low side or the high side?
    
+   b. Should you include men and women in your sample or just one or the other? Why?
+   
+   c. Suppose you guess that the standard deviation of the population will be approximately 2. How large must your sample be to get the desired confidence interval?
