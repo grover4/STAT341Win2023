@@ -1,0 +1,55 @@
+---
+title: "Problem Section 6"
+subtitle:  "Bootstrap Confidence Intervals"
+graphics: yes
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+* * * 
+### Instructions
+
+Please answer the following questions in the order in which they are posed. Add a few empty lines below each and write your answers there. Focus on answering in complete sentences. You will also need scratch paper/pen to work out the answers before typing it.
+
+For help with formatting documents in RMarkdown, please consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/). Another option is to search using Google. 
+
+* * *
+
+### Exercises 
+
+
+1. (Non-parametric bootstrap) Consider the set of 20 numbers which were independently drawn from some distribution with mean $\mu_0$ and standard deviation $\sigma_0$. 
+
+```{r}
+
+sample_data <- tibble(
+  x = c(3.56, 0.69, 0.10, 1.84, 3.93, 1.25, 0.18, 1.13, 0.27, 1.21, 
+        0.50, 0.67, 0.01, 0.61, 0.82, 1.70, 0.39, 0.11, 1.20, 0.72)
+)
+
+sample_data %>% 
+             summarise(obs_s2 = var(x) )
+
+```
+
+The observed value for the sample variance 
+$$s^2 = \frac{1}{19} \sum\limits_{i=1}^{20} (x_i - \bar{x})^2$$
+is 1.12. 
+
+We are interested in constructing the sampling distribution of this statistic  as an estimator for the population variance $\sigma^2_0$. In this problem you will create this using non-parametric bootstrap to resample from the original data. You will then calculate a confidence interval for $\sigma^2_0$.
+
+
+```{r boot-s2}
+set.seed(141)
+B = 1000
+
+#1. Take B random samples of size 20 each from your data with replacement and calculate the value of s2 for the resample.
+#2. Make a histogram of the bootstrapped values of s2. 
+#3. Examine the shape, calculate the mean and standard deviation of the bootstrapped values.
+#4. Calculate a 95% bootstrap confidence interval for sigma2 
+
+```
