@@ -50,6 +50,6 @@ B = 1000
 #1. Take B random samples of size 20 each from your data with replacement and calculate the value of s2 for the resample.
 #2. Make a histogram of the bootstrapped values of s2. 
 #3. Examine the shape, calculate the mean and standard deviation of the bootstrapped values.
-#4. Calculate a 95% bootstrap confidence interval for sigma2 
+#4. Calculate a 95% bootstrap confidence interval for sigma2 using the standard bootstrap confidence interval and also the simple percentile method
 
 ```
