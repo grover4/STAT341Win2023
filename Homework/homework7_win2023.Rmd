@@ -54,7 +54,7 @@ y<- c(4.33, 4.22, 4.23, 4.37)
 d. Calculate the estimated standard error of $\hat{\mu}_0$. Show your steps.
 
 
-2. A type of metal bar breaks when a force of size $X$ is applied, where $X$ has PDF
+2. (Force) A type of metal bar breaks when a force of size $X$ is applied, where $X$ has PDF
 $$f(x) = 2 \alpha_0 x\: e^{-\alpha_0\:x^2} \ \ \ \ x > 0$$
 where $\alpha_0 > 0$ is an unknown parameter. 
 We observe a breaking force of 40. Find a 95% confidence interval for $\alpha_0$.
@@ -63,7 +63,7 @@ We observe a breaking force of 40. Find a 95% confidence interval for $\alpha_0$
    $$P\left( q_{0.025} \leq X \leq q_{0.975} \right) = 0.95$$
    where $q_{0.025}$ and $q_{0.975}$ are the 2.5th and 97.5th percentiles of the distribution of $X$.
    
-3. A sample of 83 observations for an integer-valued random variable $Y$ is shown below:
+3. (CLT) A sample of 83 observations for an integer-valued random variable $Y$ is shown below:
 \begin{table}[h]
 \centering
 \begin{tabular}{ccccccc} \\ \hline
@@ -72,12 +72,12 @@ frequency & 13 & 18 & 23 & 15 & 6 & 8 \\ \hline
 \end{tabular}
 \end{table}
 
-   Use the Central Limit Theorem to find a 90% confidence interval for $\pi_0 = P(Y \geq 2)$. 
+   Use the Central Limit Theorem to find a 90% confidence interval for $\pi_0 = P(Y \geq 2)$. Show your work, develop your answer. We are grading on style.
 
    Hint: You actually have 83 independent Bernoulli random variables - $X_1,X_2,\dots,X_{83}$ - where each $X_i$ is one if $Y \geq 2$ and zero otherwise. Therefore you can think of $X_1, X_2, \dots, X_{83} \overset{i.i.d.}{\sim} Binom(1, \pi_0)$ and you wish to construct a confidence interval for the mean of the distribution - $\pi_0$ -  using the CLT.
 
 
-4. Read sections 18.3 and 19.2 in the Notes where I constructed a confidence interval for the mean (daily) price of 2 bedroom apartment rentals in Seattle. In this section you will repeat this calculation for a different subset of rentals: houses with 3 or more bedrooms where the entire home is for rent. The variables you will be filtering on and their values are shown below: 
+4. (Airbnb) Read sections 18.3 and 19.2 in the Notes where I constructed a confidence interval for the mean (daily) price of 2 bedroom apartment rentals in Seattle. In this section you will repeat this calculation for a different subset of rentals: houses with 3 or more bedrooms where the entire home is for rent. The variables you will be filtering on and their values are shown below: 
     - property_type: Houses
     - room_type: Entire home/apt
     - bedrooms: 3 or more
