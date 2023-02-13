@@ -1,5 +1,5 @@
 ---
-title: "Problem Section 6"
+title: "Problem Section 6 KEY"
 subtitle:  "Bootstrap Confidence Intervals"
 graphics: yes
 output: pdf_document
@@ -25,20 +25,19 @@ For help with formatting documents in RMarkdown, please consult [R Markdown: The
 1. (Non-parametric bootstrap) Consider the set of 20 numbers which were independently drawn from some distribution with mean $\mu_0$ and standard deviation $\sigma_0$. 
 
 ```{r}
-
+options(pillar.sigfig = 8)
 sample_data <- tibble(
   x = c(3.56, 0.69, 0.10, 1.84, 3.93, 1.25, 0.18, 1.13, 0.27, 1.21, 
         0.50, 0.67, 0.01, 0.61, 0.82, 1.70, 0.39, 0.11, 1.20, 0.72)
 )
-
-sample_data %>% 
-             summarise(obs_s2 = 19*var(x)/20 )
-
+n <- nrow(sample_data)
+obs_sigma2_hat <-  var(sample_data$x)*(n-1)/n
+obs_sigma2_hat
 ```
 
-The observed value for the sample variance 
-$$s^2 = \frac{1}{20} \sum\limits_{i=1}^{20} (x_i - \bar{x})^2$$
-is 1.12. 
+The observed value for the estimator of the population variance 
+$$\hat{\sigma}^2 = \frac{1}{20} \sum\limits_{i=1}^{20} (x_i - \bar{x})^2$$
+is 1.0668. 
 
 We are interested in constructing the sampling distribution of this statistic  as an estimator for the population variance $\sigma^2_0$. In this problem you will create this using non-parametric bootstrap to resample from the original data. You will then calculate a confidence interval for $\sigma^2_0$.
 
@@ -46,16 +45,87 @@ We are interested in constructing the sampling distribution of this statistic  a
 ```{r boot-s2}
 set.seed(141)
 B = 1000
+n <- nrow(sample_data)
 
-#1. Take B random samples of size 20 each from your data with replacement and calculate the value of s2 for the resample.
+#1. Take B random samples of size 20 each from your data with replacement and calculate the value...
+#...of s2 for the resample.
 #2. Make a histogram of the bootstrapped values of s2. 
 #3. Examine the shape, calculate the mean and standard deviation of the bootstrapped values.
-#4. Calculate a 95% bootstrap confidence interval for sigma2 using the standard bootstrap confidence interval and also the simple percentile method
-B=10000
+#4. Calculate a 95% bootstrap confidence interval for sigma2 using the standard bootstrap... 
+#...confidence interval and also the simple percentile method
+
+#Step 1:
 boot_df <- tibble(
-           y = replicate(n=B, expr=var(sample(sample_data$x,
-                                               size = 20,
-                                               replace=T)))
-)
-boot_df %>% summarise(mean(y))
+  #calculate variance of each resample created using replicate
+  var_star = replicate(n = B,
+                       expr = var(sample(x = sample_data$x,
+                                         size = nrow(sample_data),
+                                         replace=TRUE) )*(n-1)/n) )
+#Our DF will have a total of B variances
+boot_df %>% slice_head(n=5)
 ```
+```{r, message=F, warning=F}
+#Step 2: Create a histogram
+
+ggplot(data=boot_df, 
+       mapping = aes(x=var_star,y=..density..))+
+  geom_histogram(binwidth = .2)+
+  labs(title="Histogram of 1000 Bootstrapped Sample Variance Values")
+```
+
+Step 3: Analyze the bootstrap samples
+
+Here we see that this is a right skewed distribution.
+
+For some summary statistics we see:
+
+```{r}
+boot_df_summary <- boot_df %>% summarize(bootstrap_mean_var = mean(var_star), 
+                                         bootstrap_se = sd(var_star))
+boot_df_summary
+```
+
+
+We see that the mean of the bootstrap variances, 1.01, is slightly different than the sample value we saw before from the raw sample. To calculate a confidence interval we can consider two different methods. 
+
+In the first method we will use the standard bootstrap method.
+
+First we can examine the normality of our samples.
+
+```{r}
+ggplot(data=boot_df,
+       mapping = aes(sample = var_star))+
+  stat_qq(distribution = qnorm)+
+  stat_qq_line(distribution = qnorm)+
+  labs(title = "Normal Prob. Plot of Bootstrap Variances")
+```
+
+We see that this is not very normal, especially at the left tail. We can proceed anyways with this standard method and examine the CI of this form. 
+
+We must also do a bias correction here. We see that our bootstrap returned a mean variance of 1.011, while the original variance estimator yielded 1.0667. Thus we have a bias of `r (1.0109 - 1.0667)`. This will give us a bias corrected estimate of the population variance as:
+
+```{r}
+#sample - bias
+1.0667 - (1.0109 - 1.0667)
+```
+
+That is we will have that our 95% CI will be:
+
+$$
+[(\hat{\sigma}^2 - bias) - 1.96*se_{bootstrap}, (\hat{\sigma}^2 - bias) + 1.96*se_{bootstrap}] = [1.12-1.96*.47,1.12+1.96*.47 ]
+$$
+Calculating this with the non-rounded numbers we see we have the interval as:
+
+```{r}
+c(obs_sigma2_hat - (boot_df_summary$bootstrap_mean_var - obs_sigma2_hat) + 
+    c(-1,1)*qnorm(.975)*boot_df_summary$bootstrap_se)
+```
+
+We can also consider the simple percentile method. In this case we will simply take the 2.5 and 97.5 percentiles of our bootstrap samples. This yields:
+
+```{r}
+boot_df %>% summarize(lower = quantile(var_star,.025),
+                      upper = quantile(var_star, .975))
+```
+
+In this case we would prefer the simple percentile method, as from looking at our qqplot, the data is not very normal so using normal quantiles does not seem very reasonable. 
