@@ -85,7 +85,7 @@ frequency & 13 & 18 & 23 & 15 & 6 & 8 \\ \hline
 a. In this part, you will construct a large sample 95% confidence interval for the mean price of all such house rentals in Seattle. 
    Be sure to 
    
-   - display the first five rows of the filtered data frame
+   - display the first five rows of the filtered data frame (showing just price)
    
    - make a histogram of `price` and 
    
