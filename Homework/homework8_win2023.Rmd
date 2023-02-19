@@ -83,5 +83,5 @@ $$X = X_1 + X_2 +\dots + X_{19}$$
    
    d. What is the Type I error probability of your test? Briefly explain why.
    
-   e. Calculate the Type II error probability when $\pi_0 = 0.2$. Support your answer showing code/output as necessary.
+   e. Calculate the Type II error probability when $\pi_0 = 0.2$. Support your answer showing code/output as necessary. (You will need to figure out what $\mu_0$ value to evaluate the Type II error probability at so it corresponds to a $\pi_0=0.2$.)
 
