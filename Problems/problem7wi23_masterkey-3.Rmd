@@ -1,0 +1,224 @@
+---
+title: "Problem Section 7 KEY"
+subtitle:  "Significance Tests"
+graphics: yes
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+* * * 
+### Instructions
+
+Please answer the following questions in the order in which they are posed. Add a few empty lines below each and write your answers there. Focus on answering in complete sentences. You will also need scratch paper/pen to work out the answers before typing it.
+
+For help with formatting documents in RMarkdown, please consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/). Another option is to search using Google. 
+
+* * *
+
+### Exercises 
+
+1. A children's game uses a six sided die with a picture of a ghost named Hugo on one side and numbers on the other sides. If the die is fair, the ghost should be rolled 1/6 of the time. You test the die by rolling it $n=10$ times and and the ghost is rolled $x=3$ times.  Calculate the p-value for an exact binomial test of the hypothesis
+$$H_0: \pi = \frac{1}{6} \ \ \ H_1: \pi \neq \frac{1}{6}$$
+
+We have our sample statistic as $x=3$. Under the null hypothesis we have that:
+
+$$
+X \sim Binom(n = 10,\pi = 1/6)
+$$
+
+Since we are considering a composite alternative hypothesis, we will conduct a 2 tailed test. 
+
+First we can examine the null binomial PMF:
+
+```{r}
+binom_tibble <- tibble(
+  x = seq(0,10),
+  binom_pmf = dbinom(x,10,1/6)
+)
+binom_tibble
+ggplot(data=binom_tibble, aes(x=x,y=binom_pmf))+geom_col()+
+  geom_vline(xintercept=3,col='red')+
+  labs(y='probability')
+```
+Thus for our 2-sided p-value we would consider the probability of observing data as extreme as ours, or more. We see in the above PMF, that the values that are more extreme (have lower probability) than x=3, are all values greater than 3. Thus for our p-value we are considering:
+
+$$
+p = P(X\geq 3)  = `r pbinom(2,10,1/6, lower.tail = F)`
+$$
+```{r}
+1-pbinom(2,10,1/6)
+```
+
+Thus when the null is true, there is a 22% chance of observing x=3, or more extreme data. This is a relatively high p-value so in general we would not consider it enough information to reject the null hypothesis. 
+
+2. As input for a new inflation model, economists
+predicted that the average cost of a hypothetical "food
+basket" in western WA in July would be \$145.75. The
+standard deviation ($\sigma$) of basket prices was assumed to be
+$9.50, a figure that has held fairly constant over the years.
+To check their prediction, a sample of twenty-five baskets
+representing different parts of the region were checked in
+late July, and the average cost was \$149.75. 
+
+a. Let $\mu$ denote the true mean price of the food basket in July in Western WA. Write the null and alternative hypothesis.
+
+In this setting we would checking to see if the observed mean from the 25 basket sample, \$149.75, is enough data to reject the hypothesized mean of \$145.75. Naturally we would form our null and alternative as follows:
+
+$$
+H_0: \mu = 145.75 \ \ H_1: \mu \neq 145.75
+$$
+
+We could also consider a one sided test $H_1: \mu \geq 145.75$, but a two-sided test is more conservative.
+
+b. Suppose the test will be based on $\bar{X}$ the sample mean. What is its null sampling distribution?  (You may assume the CLT applies)
+
+If we assume that the CLT will apply that means that under the null hypothesis we will have that:
+
+$$
+\bar{X} \sim N(\mu = 145.75, \sigma = \frac{9.5}{\sqrt{25}} = 1.9)
+$$
+
+c. Calculate the P-value associated with $\bar{x} = \$149.75$. 
+
+We have that the observed data is \$149.75 - \$145.75 = \$4 away from the mean. Since normal distributions are symmetric about their mean, any value \$4 away from the mean, in either direction, will have the same density. Looking at this visually we have:
+
+```{r}
+ggplot(data=NULL)+stat_function(fun=dnorm,
+                                args = list(mean = 145.75,
+                                            sd = 1.9),
+                                xlim = c(139.75,151.75))+
+  geom_vline(xintercept = 149.75, col='red')+
+  geom_vline(xintercept = 141.75,col='red')+
+  labs(title = "Null Sampling Distribution of X_Bar",
+       x="x")
+```
+
+Thus we have that:
+
+$$
+\text{p-value} = P(\bar{X}\geq 145.75 + 4) + P(\bar{X}\leq 145.75-4) = 2\times P(\bar{X}\leq 145.75-4)
+$$
+
+Where we use the fact that the normal distribution is symmetric in order to simplify the probabilities. 
+
+Using `pnorm`, this yields as answer of $p = `pnorm(141.75,145.75,1.9)*2` = `r pnorm(141.75,145.75,1.9)*2`$. Thus when the null is true we see data this unusual or more about 3% of the time. 
+
+3. An experimenter takes a sample of size 4 - $X_1, X_2, X_3,X_4$ - from
+the Poisson probability model, 
+$$f(x) = e^{-\lambda_0} \frac{\lambda_0^{x}}{x!} \ \ \ x=0,1,2, \dots$$
+ and wishes to test
+$H_0: \lambda_0 = 6$ versus $H_1: \lambda_0 < 6$ 
+at level $\alpha = 0.1$ The test will be based on the statistic $S = X_1+X_2+X_3+X_4$. 
+
+   a. Find the Type 1 error rate for the test.
+   
+   The type 1 error rate (probability of a false positive), by definition is equal to $\alpha$ for continuous distributions. For discrete distributions, $\alpha$ is the maximum the type 1 error rate can be. In this case the type 1 error rate will be the probability we reject the null, when the null is true. We see we reject for small values of S, so there is a $s^*$ such that if S>$s*$ then we fail reject the null and if $S\leq s^*$ we reject the null. So we wish to find the probability that $S\leq s^*$ if the null is true, that is, $\lambda_0 = 6$. Using the work in part b, we have that this $s^*$ will be equal to 17. Under the null we have:
+   
+$$
+S \sim Pois(4 \times 6 = 24) 
+$$
+
+So we have that the type 1 error rate is $P(S\leq 17)$, when S has the above dist. This is:
+
+```{r}
+ppois(17,24)
+```
+
+   b. Calculate the Type 2 error rate when $\lambda_0 = 4$. 
+   
+In order to find the Type 2 error rate (probability of a false negative), we must consider the sampling distribution of S under the null. We know that under this one-sided alternative hypothesis  we will reject the null hypothesis if S is less than or equal to a certain threshold value $s^*$ (smaller rate of Poisson implies lower expectation for S). Thus we will fail to reject the null if $S > s^*$. Thus once we have that threshold value, $s^*$, we will have the the type 2 error rate as $P(S > s^* | \lambda_0 = 4)$. That is, we will find the probability that we will not reject the null hypothesis, if the true distribution has rate parameter $\lambda_0 = 4$ (i.e. that the alternative hypothesis is true).
+   
+We will have the test statistic $S = X_1+X_2+X_3+X_4$. Since we have that under the null $X_1,X_2,X_3,X_4$ are iid $Pois(\lambda = 6)$ random variables, we have that the null sampling distribution for S will be:
+   
+$$
+S \sim Pois(4\times 6 = 24)
+$$
+Now we must ask, for what values of $s^*$, will lead to us rejecting the $H_0$, if $\alpha=.1$. 
+
+We must find the largest value $s*$ such that under this sampling distribution $P(S\leq s^*|\lambda_0 = 6) \leq .1$. We can observe the Poisson PMF and CDF below to find this value:
+
+```{r}
+alpha <-  .1
+pois_tibble <- tibble(
+   s = seq(0,20,1),
+   "P(S=s)" = dpois(s,24),
+   "P(S<=s)" = ppois(s,24),
+   "Greater than .1" = ppois(s,24) >= alpha
+)
+pois_tibble
+```
+
+This tells us that the largest value S can be in order to still reject the null hypothesis is equal to 17. So if we observe S=0,1,2,...,17, we would reject the null hypothesis at level $\alpha=.1$. 
+
+Thus we have that $s^* = 17$ as our threshold value. Since if $S\leq s^*$, we would reject the null and vice versa if $S > s^*$.
+
+Recall that we wanted to find the probability of a type 2 error, that is the probability we fail to reject the null when the alternative hypothesis is true, and $\lambda_0 = 4$. We know that if our sampling statistic, $S \leq 17$, then we would reject the null hypothesis. This implies that if $S>17$, we will fail to reject the null hypothesis. So we are finding the probability that $S>17$ if the true $\lambda_0$ parameter was equal to 4. We have that under our alternative hypothesis, if $\lambda_0 = 4$, then we would have:
+
+$$
+S \sim Pois(4 \times 4 = 16)
+$$
+Thus using `ppois` the Type 2 error rate when $\lambda_0 = 4$ is:
+
+$$
+\text{Type II Error Rate} = P(S > 17|\lambda_0 = 4) = `ppois(17,16,lower.tail=F)` = `r ppois(17,16,lower.tail=F)`
+$$
+
+4. An urn contains ten marbles: an unknown number of them are white, the rest red. We wish to test:
+$$H_0: \mbox{exactly half are white}$$
+versus 
+$$H_1: \mbox{more than half are white}$$
+We will draw randomly, without replacement, three marbles and reject $H_0$ if two or more are white.
+
+   a. Find the Type I error rate of this test. (Hint: the number of white marbles among the three drawn is a Hypergeometric random variable)
+   
+   Let X be the number of white marbles drawn from a draw of k = 3 marbles with replacement. We thus have that under the null, the sampling distribution of X is:
+   
+$$
+X \sim Hypergeom(m = 5,n = 5,k = 3)
+$$
+
+Where m is the number of white marbles, and n is the number of black marbles. We reject if 2 or more of the draws are white. We see that this has a probability of:
+
+```{r}
+#P(X>=2) = P(X>1) = 1 - P(X<=1)
+1 - phyper(1,m=5,n=5,k=3)
+```
+
+Thus we have a type I error rate of of 0.5.
+   
+   b. Find the Type II error rate in two situations.
+   
+      - 60\% of the marbles in the urn are white
+      
+If 60% of the marbles in the urn are white (6/10), then under this alternative we will have:
+
+$$
+X \sim Hypergeom(m = 6,n = 4,k = 3)
+$$
+
+In order to find the Type II error rate we must find the probability that we fail to reject the null (we see less than 2 white marbles), if X has the above distribution. Thus we have a Type II error rate of:
+
+```{r}
+#P(X<2|m=6) = P(X<=1|m=6)
+phyper(1,m=6,n=4,k = 3)
+```
+
+      
+      - 70\% of the marbles in the urn are white.
+      
+Similar to above, if 70% of the marbles are white, under this alternative:
+
+$$
+X \sim Hypergeom(m = 7,n = 3,k = 3)
+$$
+
+Thus we have a type II error rate of:
+
+```{r}
+phyper(1,m=7,n=3,k=3)
+```
+
