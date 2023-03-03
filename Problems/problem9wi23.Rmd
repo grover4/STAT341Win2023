@@ -1,0 +1,58 @@
+---
+title: "Problem Section 9"
+subtitle:  "The z test"
+graphics: yes
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(fastR2)
+```
+
+* * * 
+### Instructions
+
+Please answer the following questions in the order in which they are posed. Add a few empty lines below each and write your answers there. Focus on answering in complete sentences. You will also need scratch paper/pen to work out the answers before typing it.
+
+For help with formatting documents in RMarkdown, please consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/). Another option is to search using Google. 
+
+* * *
+
+### Exercises 
+
+1. Suppose $n = 36$ observations are taken from a distribution with mean $\mu_0$ and standard deviation $\sigma_0 = 8.0$ for the purpose of testing
+$H_0: \mu_0 = 60$ versus $H_1: \mu_0 \neq  60$ at the $\alpha = 0.07$ level of significance. (You may assume the CLT holds)
+
+a. Find the rejection region of the test. 
+
+b. Find the Type II error probability of the test when $\mu_0 = 62$. 
+
+c. Find the confidence interval which is the dual of this significance test. Verify that they will lead to consistent conclusions.
+
+
+2. Suppose we want to test a prediction method on a set of $n$ new test cases. Let $X_i=1$ if the predictor is wrong and 0 otherwise. Then $$\bar{X}_n = \frac{1}{n} \sum\limits_{i=1}^{n}X_i$$ is the observed error rate. Each $X_i$ may be regarded as an independent Bernoulli with probability $\pi_0$. We would like to know the true, but unknown rate $\pi$.  How large should $n$ be so that we have at least a 98\% probability that  the observed error rate is within 2\% of $\pi_0$.  (You may assume the CLT holds)
+
+
+3. A rat poison is described by its lethal dose, i.e., a value $x$ such that if the rat
+receives a concentration $< x$ it survives, while if the concentration is $\geq x$ it dies. The
+lethal dose varies from rat to rat as a random variable $X$ such that $\ln(X)$ is normally
+distributed with mean $\mu_0$ and standard deviation $\sigma_0$. 
+
+   A manufacturer of the poison claims that if the dose is 1, about 60% of
+rats will die, while if it is 4 about 95% are killed.  In other words: they are claiming that 
+$$P(X < 1) = 0.6 \ \ \ P(X < 4) = 0.95$$
+
+   In an experiment 150 rats are given the dose 2, and 95 of them die. Does this indicate that the manufacturer has
+overestimated the effect of the poison?
+
+   Hint: First find $\mu_0$ and $\sigma_0$. Use the values to see what the manufacturer is claiming about the proportion of rats that will die at dose 2. Then use the data to assess this claim. 
+
+4. Suppose $x_1,x_2,\dots,x_n$ are observations of a Bernoulli random variable. That is, each $x$ is either 0 or 1. Therefore
+$\sum\limits_{i=1}^{n} x_i$ denotes the number of 1's observed. 
+Show that the sample variance
+$$s^2 = \frac{1}{n-1} \sum\limits_{i=1}^{n} (x_i - \bar{x})^2$$
+is equal to $\frac{n}{n-1}\bar{x}(1-\bar{x})$. 
+
+   Hint: Break up the terms in the summation into two types: those with $x_i = 1$ and those with $x_i = 0$. How many of each type are there? 
